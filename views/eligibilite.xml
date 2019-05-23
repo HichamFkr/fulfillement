@@ -1,0 +1,51 @@
+<openerp>
+	<data>
+		
+		 <record model="ir.ui.view" id="sotype_eligible_form_view">
+ 			<field name="name">sale_order.type.eligible</field>
+            <field name="model">sale.order.type</field>
+			<field name="inherit_id" ref="sale_order_type.sot_sale_order_type_form_view"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='invoicing']" position="after">
+            		<field name="fulfillement_so_is_eligible"/>
+            	</xpath>
+            </field>         		 	
+		 </record>
+
+		 <record model="ir.ui.view" id="partner_eligible_form_view">
+			<field name="name">partner.eligible</field>
+	        <field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='title']" position="after">
+	        		<field name="fulfillement_is_eligible"/>
+	        	</xpath>
+	        </field>         		 	
+		 </record>
+
+		<record model="ir.ui.view" id="product_eligible_form_view">
+			<field name="name">product.eligible</field>
+	        <field name="model">product.template</field>
+			<field name="inherit_id" ref="account.product_template_form_view"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='active']" position="after">
+	        		<field name="fulfillement_is_eligible"/>
+	        	</xpath>
+	        </field>         		 	
+		 </record>
+
+
+		<record model="ir.ui.view" id="sol_eligible_form_view">
+			<field name="name">sale_order.line.eligible</field>
+	        <field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+	        		<field name="fulfillement_is_eligible"/>
+	        	</xpath>
+	        </field>         		 	
+		</record>
+
+
+	</data>
+</openerp>

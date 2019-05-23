@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="sla_line" model="fulfillement.sla">
+            <field name="fulfillement_sla_name">Line percent</field>
+            <field name="fulfillement_sla_description">Regle de remplissage de la ligne</field>
+        </record>
+
+        <record id="sla_order" model="fulfillement.sla">
+            <field name="fulfillement_sla_name">Order percent</field>
+            <field name="fulfillement_sla_description">Regle de remplissage de la commande</field>
+        </record>
+    </data>
+</openerp>
