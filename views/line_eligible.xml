@@ -1,0 +1,61 @@
+<openerp>
+	<data>
+            <!-- lines eligible tree -->
+            <record id="view_sale_order_line_eligible" model="ir.ui.view">
+                    <field name="name">sale.order.line.tree</field>
+                    <field name="model">sale.order.line</field>
+                    <field name="type">tree</field>
+                    <field name="priority" eval="8"/>
+                    <field name="arch" type="xml">
+                        <tree string="Lignes eligibles" editable="bottom">
+                              <field name="fulfillement_score_partner" readonly="1"/>
+                              <field name="order_id" readonly="1"/>
+                              <field name="order_partner_id" readonly="1"/>
+                              <field name="product_id" readonly="1"/>
+                              <field name="product_qty" readonly="1"/>
+                              <field name="virtual_qty_available" readonly="1"/>
+                              <field name="qty_livre"/>
+                              <field name="sla_line_min"/>
+                        </tree>
+                    </field>
+            </record>
+
+            <!-- add score partner field -->
+            <!-- <record id="view_partner_score" model="ir.ui.view">
+                  <field name="name">partner.score.tree</field>
+                  <field name="model">res.partner</field>
+                  <field name="type">tree</field>
+                  <field name="inherit_id" ref="insidjam_stock_fulfillement.view_sale_order_line_eligible"/>
+                  <field name="arch" type="xml">
+                        <xpath expr="/tree/field[@name='order_id']" position="after">
+                             <field name="fulfillement_score_chiffre_affaire" readonly="1"/>
+                        </xpath>
+                  </field>
+            </record>
+ -->
+            <!-- display so lines eligible -->
+            <record model="ir.actions.act_window" id="line_eligible_action">
+                  <field name="name">Ligne eligible</field>
+                  <field name="res_model">sale.order.line</field>
+                  <field name="view_type">form</field>
+                  <field name="view_mode">tree</field>
+                  <field name="domain">[('fulfillement_is_eligible', '=', True)]
+                  </field>
+                  <field name="view_id" ref="view_sale_order_line_eligible"/>
+            </record>
+
+            <!-- display so lines confirmed  -->
+            <record model="ir.ui.view" id="line_search_view">
+            <field name="name">search.line.eligible</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="insidjam_pack_std.view_sale_order_line_search"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//search">
+                        <filter string="Confirmed" domain="[('state','=','confirmed')]" name="line order confirmed"/>
+                  </xpath>
+            </field>
+            </record>
+            <menuitem id="line_eligible_menu" name="Lignes eligibles" parent="base.menu_sales" action="line_eligible_action"/>
+
+      </data>
+</openerp>

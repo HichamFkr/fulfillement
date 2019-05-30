@@ -23,7 +23,9 @@
     'depends': ['base',
                 'product',
                 'sale',
-                'sale_order_type'],
+                'sale_order_type',
+                'insidjam_pack_std',
+                'web'],
 
     # always loaded
     'data': [
@@ -31,7 +33,10 @@
         'templates.xml',
         'views/eligibilite.xml',
         'views/partner_sla.xml',
-        'data/service_rules_level.xml'
+        'views/line_eligible.xml',
+        'views/assets.xml',
+        'data/service_rules_level.xml',
+        # 'wizard/sol_make_invoice_fulfillement.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

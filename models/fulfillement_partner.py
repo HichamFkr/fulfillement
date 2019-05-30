@@ -9,12 +9,15 @@ class fulfillement_partner(models.Model):
 
     fulfillement_is_eligible = fields.Boolean("Eligible", default=False, store=True)
     fulfillement_score_anciente = fields.Integer("Score Anciente", compute='_get_score_anciente')
-    fulfillement_score_chiffre_affaire = fields.Integer("Score Chiffre d'affaire", compute='_get_score_chiffre_affaire')
-    fulfillement_score_partner = fields.Integer("Score", store=True) #, compute='_get_score_partner'
+    fulfillement_score_chiffre_affaire = fields.Integer("Score Chiffre d'affaire") #compute='_get_score_chiffre_affaire'
     fulfillement_partner_coef = fields.Integer()
     # fulfillement_sla = fields.Many2many("fulfillement.sla", string="SLAs")
     fulfillement_sla_ids = fields.One2many('res.partner.sla', 'partner_id', string="Regles de service")
     start_date = fields.Date(default=fields.Date.today)
+
+
+    fulfillement_score = fields.Float("Score") #, store=True
+
 
     @api.depends('start_date')
     def _get_score_anciente(self):
@@ -34,13 +37,14 @@ class fulfillement_partner(models.Model):
                     r.fulfillement_score_anciente = 3
 
 
-
-    @api.multi
-    def _get_score_chiffre_affaire(self):
+    @api.depends('credit')
+    def _get_score(self):
         for r in self:
-            if(r.credit >= 0 and r.credit <= 1000):
-                r.score = 2
-            elif(r.credit > 1000 and r.credit <= 2000):
-                r.score = 4
-            else:
-                r.score = 5
+            r.fulfillement_score = r.credit + 1.0
+            # if(r.credit >= 0 and r.credit <= 1000):
+            #     r.fulfillement_score = 2
+            # elif(r.credit > 1000 and r.credit <= 2000):
+            #     r.fulfillement_score = 4
+            # else:
+            #     r.fulfillement_score = 5
+            

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_sol_fulfillement_make_invoice" model="ir.ui.view">
+            <field name="name">Sales OrderLine Fulfillement Make Invoice</field>
+            <field name="model">sol.fulfillement.make.invoice</field>
+            <!-- <field name="inherit_id" ref="sale.view_sale_order_line_make_invoice"/> -->
+            <field name="arch" type="xml">
+               <form string="Create invoices">
+                    <button name="make_invoices_fulfillement" string="Create Fulfillement Invoices" type="object" class="oe_highlight"/>
+                </form>
+            </field>
+        </record>
+
+       <!--  <act_window id="launch_invoice_ful_wizard"
+                    name="Create Invoices Fulfillement"
+                    src_model="sale.order.line"
+                    res_model="sol.fulfillement.make.invoice"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/> -->
+
+        <record id="action_view_sol_fulfillement_make_invoice" model="ir.actions.act_window">
+            <field name="name">Create Fulfillement Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sol.fulfillement.make.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_sol_fulfillement_make_invoice"/>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="sol_fulfillement_make_invoice">
+            <field name="model_id" ref="sale.model_sale_order_line" />
+            <field name="name">Make Invoices</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_view_sol_fulfillement_make_invoice'))" />
+            <field name="key">action</field>
+            <field name="model">sale.order.line</field>
+        </record>
+    </data>
+</openerp>

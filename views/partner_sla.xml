@@ -1,7 +1,7 @@
 <openerp>
 	<data>
 		
-		 <record model="ir.ui.view" id="partner_sla_form_view">
+		<record model="ir.ui.view" id="partner_sla_form_view">
  			<field name="name">res_partner.form.view</field>
             <field name="model">res.partner</field>
 			<field name="inherit_id" ref="base.view_partner_form"/>
@@ -12,15 +12,26 @@
 								<field name="fulfillement_sla_ids">
 									<tree editable="bottom">
 										<field name="sla_id"/>
-										<field name="value"/>
+										<field name="value"/><!-- 
+										<label for="value">%%</label> -->
+										
 									</tree>
 								</field>
-								
                             </group>
                         </page>
             	</xpath>
             </field>         		 	
 		 </record>
 
+		<record model="ir.ui.view" id="score_field">
+			<field name="name">res_partner.score.view</field>
+            <field name="model">res.partner</field>
+			<field name="inherit_id" ref="insidjam_stock_fulfillement.partner_sla_form_view"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='fulfillement_sla_ids']" position="after">
+            		<field name="fulfillement_score"/>
+            	</xpath>
+            </field>
+		</record>
 	</data>
 </openerp>

@@ -8,7 +8,7 @@ class res_partner_sla(models.Model):
 
     partner_id = fields.Many2one('res.partner', ondelete='set null', string="Partner")
     sla_id = fields.Many2one('fulfillement.sla', ondelete='set null', string="SLA")
-    value = fields.Integer(string="Value")
+    value = fields.Float(string="Value")
 
-    _sql_constraints = [('name_uniq', 'unique(partner_id,sla_id)','Unique!'),
-                        ('check_value', 'CHECK(value<=100)','value<=100!'),]
+    _sql_constraints = [('name_uniq', 'unique(partner_id,sla_id)','You cant choose an SLA more than once!'),
+                        ('check_value', 'CHECK(value<=100)','value must be <= 100!'),]
