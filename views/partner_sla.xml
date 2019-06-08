@@ -14,7 +14,6 @@
 										<field name="sla_id"/>
 										<field name="value"/><!-- 
 										<label for="value">%%</label> -->
-										
 									</tree>
 								</field>
                             </group>

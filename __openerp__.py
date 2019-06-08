@@ -25,7 +25,7 @@
                 'sale',
                 'sale_order_type',
                 'insidjam_pack_std',
-                'web'],
+                'web','web_list_html_widget'],
 
     # always loaded
     'data': [
@@ -36,7 +36,8 @@
         'views/line_eligible.xml',
         'views/assets.xml',
         'data/service_rules_level.xml',
-        # 'wizard/sol_make_invoice_fulfillement.xml'
+        'views/sla_tooltip.xml',
+        'wizard/confirm_line_fulfill.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

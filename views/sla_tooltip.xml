@@ -1,0 +1,17 @@
+<openerp>
+	<data>
+        <template id="tooltip_sla" name="SLA Tooltip">
+            <span class="ins-tooltip"> <i class="fa fa-info-circle fa-2x" style="color:#55b5e2"></i>
+
+		            <span><strong>SLA : </strong> <span><t t-esc="line"/></span>
+		                <br />
+		            <strong>Value : </strong><span> <t t-esc="line_value"/> %</span>
+		                <br />
+		            </span>
+		            
+	       	</span>
+       	</template>
+	</data>
+</openerp>
+
+

@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-import sol_make_invoice_fulfillement
+import confirm_line_fulfill
 
