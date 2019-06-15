@@ -42,7 +42,19 @@
 	        <field name="arch" type="xml">
 	        	<xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
 	        		<field name="fulfillement_is_eligible"/>
+	        		<field name="state"/>
 	        	</xpath>
+	        </field>         		 	
+		</record>
+
+		<record model="ir.ui.view" id="sol_eligible_form_view_coloring">
+			<field name="name">sol.eligible.color</field>
+	        <field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	        <xpath expr="//tree[@string='Sales Order Lines']" position="attributes">
+                <attribute name="colors">red:state=='fulfillement'</attribute>
+            </xpath>
 	        </field>         		 	
 		</record>
 

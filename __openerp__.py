@@ -36,7 +36,7 @@
         'views/line_eligible.xml',
         'views/assets.xml',
         'data/service_rules_level.xml',
-        'views/sla_tooltip.xml',
+        # 'views/sla_tooltip.xml',
         'wizard/confirm_line_fulfill.xml'
     ],
     # only loaded in demonstration mode

@@ -15,7 +15,29 @@
         </record>
 
         <act_window id="launch_fulfillement_wizard"
-                    name="Confirm Fulfillement"
+                    name="Confirm fulfillement"
+                    src_model="sale.order.line"
+                    res_model="sale.order.fulfill"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
+
+        <record model="ir.ui.view" id="wizard_form_view">
+            <field name="name">confirm.fulfill.wizard</field>
+            <field name="model">sale.order.fulfill</field>
+            <field name="arch" type="xml">
+                <form string="Confirm">
+                    <footer>
+                        <button name="auto_fulfillement" type="object"
+                                string="Confirm" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="auto_fulfillement_wizard"
+                    name="Auto fulfillement"
                     src_model="sale.order.line"
                     res_model="sale.order.fulfill"
                     view_mode="form"

@@ -17,8 +17,6 @@
                               <field name="virtual_qty_available" readonly="1"/>
                               <field name="qty_livre"/>
                               <field name="state"/>
-                              <field name="sla_line_min"/>
-
                         </tree>
                     </field>
             </record>
