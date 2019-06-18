@@ -1,0 +1,40 @@
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="score_client">
+ 			<field name="name">sale_order.score.view</field>
+            <field name="model">sale.order.score</field>
+            <field name="arch" type="xml">
+            	<form string="Score">
+    			<sheet>
+                	<group>
+	                    <field name="type_cmd"/>
+	                    <field name="coeff_type_cmd" attrs="{'invisible':[('type_cmd', '=', False)]}"/>
+	            		<field name="type_cmd_ids" attrs="{'invisible':[('type_cmd', '=', False)]}"/>
+	            		<field name="note" attrs="{'invisible':[('type_cmd', '=', False)]}"/>
+                    </group>
+                    </sheet>
+            	</form>
+            </field>         		 	
+		 </record>
+
+		<record model="ir.ui.view" id="score_client_tree">
+            <field name="name">sale_order.score.tree</field>
+            <field name="model">sale.order.score</field>
+            <field name="arch" type="xml">
+                <tree string="Notes List">
+                    <field name="type_cmd_ids"/>
+                    <field name="note"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="score_type_action">
+            <field name="name">Scores Type de commande</field>
+            <field name="res_model">sale.order.score</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- <menuitem id="score_menu" name="Score" parent="base.menu_base_config"/> -->
+        <menuitem id="score_type_cmd_menu" name="Score Type de commande " parent="score_menu" action="score_type_action"/>
+
+	</data>
+</openerp>

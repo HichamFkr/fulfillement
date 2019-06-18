@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="p1" model="fulfillement.potentiel">
+            <field name="fulfillement_potentiel_name">Potentiel degré 1</field>
+            <field name="fulfillement_potentiel_value">1</field>
+        </record>
+
+        <record id="p2" model="fulfillement.potentiel">
+            <field name="fulfillement_potentiel_name">Potentiel degré 2</field>
+            <field name="fulfillement_potentiel_value">2</field>
+        </record>
+
+        <record id="p3" model="fulfillement.potentiel">
+            <field name="fulfillement_potentiel_name">Potentiel degré 3</field>
+            <field name="fulfillement_potentiel_value">3</field>
+        </record>
+    </data>
+</openerp>

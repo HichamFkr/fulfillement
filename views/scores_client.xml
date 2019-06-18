@@ -1,0 +1,36 @@
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="score_client">
+ 			<field name="name">res_partner.score.view</field>
+            <field name="model">res.partner.score</field>
+            <field name="arch" type="xml">
+            	<form string="Score">
+    			<sheet>
+                	<group>
+	                    <field name="anciente"/>
+	                    <field name="coeff_enciente" attrs="{'invisible':[('anciente', '=', False)]}"/>
+	            		<field name="enciente_ids" attrs="{'invisible':[('anciente', '=', False)]}">
+	            			<tree editable="bottom">
+								<field name="date_debut"/>
+								<field name="date_fin"/>
+								<field name="note"/>
+							</tree>
+	            		</field>
+                    </group>
+                    </sheet>
+            	</form>
+            </field>         		 	
+		 </record>
+
+
+        <record model="ir.actions.act_window" id="score_anciente_action">
+            <field name="name">Scores Client</field>
+            <field name="res_model">res.partner.score</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="score_menu" name="Score" parent="base.menu_base_config"/>
+        <menuitem id="score_client_menu" name="Score clients" parent="score_menu" action="score_anciente_action"/>
+
+	</data>
+</openerp>
