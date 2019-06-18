@@ -20,13 +20,16 @@ class sale_order_line_to_fulfill(models.TransientModel):
                 new_line_id = line.copy(data)
         lines.write({'state':'confirmed', 'fulfillement_is_eligible':False})
 
-    @api.multi
+    @api.one
     def auto_fulfillement(self):
         so_ids = self.env.context.get('active_ids')
         lines = self.env['sale.order.line'].browse(so_ids).filtered(lambda line: line.state=='fulfillement')
         for line in lines:
-            qty = int(line.product_uom_qty * line.sla_line_min)
-            line.qty_livre = qty + 1
+            qty = line.product_uom_qty * line.sla_line_min
+            if type(qty) == "Float":
+                line.qty_livre = int(qty) + 1
+            else:
+                line.qty_livre = qty
             print "==================="
             print str(line.qty_livre)
             self.confirm_fulfillement()

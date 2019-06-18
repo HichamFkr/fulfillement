@@ -35,9 +35,12 @@
         'views/partner_sla.xml',
         'views/line_eligible.xml',
         'views/assets.xml',
+        'views/scores_client.xml',
+        'views/scores_type_cmd.xml',
         'data/service_rules_level.xml',
+        'data/potentiel.xml',
         # 'views/sla_tooltip.xml',
-        'wizard/confirm_line_fulfill.xml'
+        'wizard/confirm_line_fulfill.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
