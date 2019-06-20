@@ -17,12 +17,43 @@
 							</tree>
 	            		</field>
                     </group>
+
+                    <group>
+                        <field name="chiffre_affaire"/>
+                        <field name="coeff_chiffre_affaire" attrs="{'invisible':[('chiffre_affaire', '=', False)]}"/>
+                        <field name="chiffre_affaire_ids" attrs="{'invisible':[('chiffre_affaire', '=', False)]}">
+                            <tree editable="bottom">
+                                <field name="somme_debut"/>
+                                <field name="somme_fin"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <group>
+                        <field name="potentiel"/>
+                        <field name="coeff_potentiel" attrs="{'invisible':[('potentiel', '=', False)]}"/>
+                        <field name="potentiel_id" attrs="{'invisible':[('potentiel', '=', False)]}"/>
+                        <field name="note" attrs="{'invisible':[('potentiel', '=', False)]}"/>
+                    </group>
+
+
                     </sheet>
             	</form>
             </field>         		 	
-		 </record>
+		</record>
 
-
+        <record model="ir.ui.view" id="score_client_tree">
+            <field name="name">res_partner.score.tree</field>
+            <field name="model">res.partner.score</field>
+            <field name="arch" type="xml">
+                <tree string="Notes List">
+                    <field name="anciente"/>
+                    <field name="chiffre_affaire"/>
+                    <field name="potentiel"/>
+                </tree>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="score_anciente_action">
             <field name="name">Scores Client</field>
             <field name="res_model">res.partner.score</field>
@@ -30,7 +61,7 @@
             <field name="view_mode">tree,form</field>
         </record>
         <menuitem id="score_menu" name="Score" parent="base.menu_base_config"/>
-        <menuitem id="score_client_menu" name="Score clients" parent="score_menu" action="score_anciente_action"/>
+        <menuitem id="score_client_menu" name="Score clients" parent="score_menu" action="score_anciente_action" sequence="1"/>
 
 	</data>
 </openerp>

@@ -37,6 +37,12 @@ class res_partner_score(models.Model):
 
     _sql_constraints = [('check_value', 'CHECK((coeff_enciente + coeff_chiffre_affaire + coeff_potentiel)==1)','La somme des coefficient doit être égale à 1'),]
 
+class sale_order_age_score(models.Model):
+	_name = "sale.order.age.score"
+	age_id = fields.Many2one('sale.order.score', ondelete='set null')
+	jour_debut = fields.Float('Jour début')
+	jour_fin = fields.Float('Jour fin')
+	note = fields.Float(string="Note")
 
 class sale_order_score(models.Model):
     _name = 'sale.order.score'
@@ -45,6 +51,10 @@ class sale_order_score(models.Model):
     coeff_type_cmd = fields.Float(string="Coefficient")
     type_cmd_ids = fields.Many2one('sale.order.type', 'Order Type', ondelete='set null')
     note = fields.Float(string="Note")
+
+    age_cmd = fields.Boolean(string="Age de la commande")
+    coeff_age_cmd = fields.Float(string="Coeffecient")
+    age_ids = fields.One2many('sale.order.age.score', 'age_id', string="Configuration")
 
     _sql_constraints = [('check_value', 'CHECK(coeff_type_cmd<=1)','Le coefficient doit être inférieur ou égale à 1'),]
 
