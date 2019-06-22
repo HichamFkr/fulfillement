@@ -22,9 +22,9 @@
                     target="new"
                     key2="client_action_multi"/>
 
-        <record model="ir.ui.view" id="wizard_form_view">
-            <field name="name">confirm.fulfill.wizard</field>
-            <field name="model">sale.order.fulfill</field>
+        <record model="ir.ui.view" id="wizard_auto_fulfill">
+            <field name="name">confirm.auto.fulfill.wizard</field>
+            <field name="model">sale_order.auto.fulfill</field>
             <field name="arch" type="xml">
                 <form string="Confirm">
                     <footer>
@@ -39,7 +39,7 @@
         <act_window id="auto_fulfillement_wizard"
                     name="Auto fulfillement"
                     src_model="sale.order.line"
-                    res_model="sale.order.fulfill"
+                    res_model="sale_order.auto.fulfill"
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/>

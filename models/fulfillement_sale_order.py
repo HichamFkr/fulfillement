@@ -22,6 +22,8 @@ class sla_tool_tip(models.Model):
     html_tooltip_sla = fields.Text(string="SLA", compute="_get_html_tooltip_sla")
     qty_livre = fields.Float(string="Quantité à livré", default=lambda self: self._set_qte_livre())
 
+    _sql_constraints = [('check_value', 'CHECK(qty_livre>=sla_line_min * product_uom_qty)',"Erreur"),]
+
     @api.model
     def _set_qte_livre(self):
         qty = self.product_uom_qty  + (self.product_uom_qty * self.sla_line_min)
