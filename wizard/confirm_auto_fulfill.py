@@ -8,7 +8,7 @@ import numpy as np
 class sale_order_auto_fulfill(models.TransientModel):
     _name = 'sale_order.auto.fulfill'
 
-    def _decesion_matrix(self, clients):
+    def _decesion_matrix(self, partners):
         def fill(row, n, begin, end):
             if n == 1:
                 n = 1
@@ -17,7 +17,7 @@ class sale_order_auto_fulfill(models.TransientModel):
             row[int(begin): int(end)] = n
 
             return row
-        nbr_client = len(clients)
+        nbr_client = len(partners)
         rows = 2 ** nbr_client
         A = np.zeros((nbr_client, rows))
         iterations = 2
@@ -63,36 +63,63 @@ class sale_order_auto_fulfill(models.TransientModel):
 
         for line in lines:
             lines_sort_by_score_partner.append(line)
-            
+
         for s in scores:
             arr_scores = np.sort(np.array(list(dict.fromkeys(s))))[::-1] #convert list to numpy array
 
         # arr_scores =  np.sort(scores)
-        print arr_scores
+        # print arr_scores
 
         lines_sort_by_score_partner.sort(key=lambda l: l.fulfillement_score_partner, reverse=True)
         partners_sorted = []
         for l in lines_sort_by_score_partner:
             partners_sorted.append(l.order_partner_id)
+
         partners_sorted = list(dict.fromkeys(partners_sorted))
         partners_sorted.sort(key= lambda p:p.credit, reverse=True)
 
         #remove duplicate partners
         decesion_matrix = self._decesion_matrix(partners_sorted)
         decesion_scores = np.dot(decesion_matrix , arr_scores.T) #to determine highest scores
-        print decesion_matrix
-        print decesion_scores
+        # print decesion_matrix
+        # print decesion_scores
+
         max_score = np.max(decesion_scores)
         index_max_score = np.argmax(decesion_scores)
 
         decesion_partners = decesion_matrix[index_max_score]
+
         final_decesion_partners = []
 
-        # for index, item in enumerate(decesion_partners, start=0):
-        #     if item == 1.0:
-        #         final_decesion_partners.append(partners[index])
-
-        # for p in final_decesion_partners:
-        #     print o.order_id
-        #     for o in p.mapped('order_id'):
+        for index, item in enumerate(decesion_partners, start=0):
+            if item == 1.0:
+                final_decesion_partners.append(partners_sorted[index])
+        # print decesion_matrix
+        # print decesion_scores
+        # print decesion_partners
+        # print final_decesion_partners
         #
+        for p in final_decesion_partners:
+            self._check_sla_order(p)
+    @api.one
+    def _check_sla_line(self, lines):
+        # so_ids = self.env.context.get('active_ids')
+        # lines = self.env['sale.order.line'].browse(so_ids).filtered(lambda line: line.state == 'fulfillement')
+        for line in lines:
+            if line.sla_line_min:
+                if line.qty_livre >= (line.product_uom_qty * line.sla_line_min):
+                    return True
+
+    @api.one
+    def _check_sla_order(self, partners):
+        count = 0
+        for p in partners:
+            if p.fulfillement_sla_ids:
+                orders = self.env['sale.order'].search([('partner_id', '=', p.id), ('state', '=', 'waiting_shipping')])
+                for o in orders:
+                    for l in o.mapped('order_line'):
+                        if self._check_sla_line(l) or l.state !='fulfillement':
+                            count += 1
+                    if count/l.nb_lines >= p.fulfillement_sla_ids[1].value:
+                        print "True"
+                        return True
