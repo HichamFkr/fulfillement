@@ -25,7 +25,8 @@ class fulfillement_sale_order_line(models.Model):
 	@api.depends('order_partner_id')
 	def _get_min_line(self):
 		for r in self:
-			r.sla_line_min = (r.order_partner_id.fulfillement_sla_ids.value)/ 100.0
+			sla_min = r.order_partner_id.fulfillement_sla_ids.search([('sla_id', '=', 'sla_line'), ('partner_id', '=', r.order_partner_id.id)])
+			r.sla_line_min = sla_min.value/ 100.0
 
 
 	@api.depends('product_id.qty_available')

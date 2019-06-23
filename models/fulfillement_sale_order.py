@@ -68,3 +68,20 @@ class sla_tool_tip(models.Model):
                      """
             else:
                 self.html_tooltip_sla = ""
+
+# @api.depends('order_partner_id.fulfillement_sla_ids', 'order_id.partner_id')
+#     def _get_html_tooltip_sla(self):
+#         for r in self:
+#             SLAs = r.order_partner_id.fulfillement_sla_ids.search([('partner_id', '=', r.order_partner_id.id)])
+#             lines=[]
+#             orders=[]
+#             for sla in SLAs:
+#                 # print sla.partner_id
+#                 # print sla.sla_id.fulfillement_sla_name
+#                 # print sla.value
+#                 if sla.sla_id.fulfillement_sla_name == 'Line percent':
+#                     lines.append(sla)
+#                 else:
+#                     orders.append(sla)
+#             for sla in lines, orders:
+#                print sla.sla_id.fulfillement_sla_name

@@ -39,18 +39,22 @@ class sale_order_auto_fulfill(models.TransientModel):
 
 
     @api.one
+    def _fulfill(self, line):
+        line.ensure_one()
+        qty = line.product_uom_qty * line.sla_line_min
+        if type(qty) == "Float":
+            line.qty_livre = int(qty) + 1
+        else:
+            line.qty_livre = qty
+        self.env['sale.order.fulfill'].confirm_fulfillement()
+
+
+
+    @api.one
     def auto_fulfillement(self):
         so_ids = self.env.context.get('active_ids')
         lines = self.env['sale.order.line'].browse(so_ids).filtered(lambda line: line.state=='fulfillement')
-        # for line in lines:
-        #     qty = line.product_uom_qty * line.sla_line_min
-        #     if type(qty) == "Float":
-        #         line.qty_livre = int(qty) + 1
-        #     else:
-        #         line.qty_livre = qty
-        #     print "==================="
-        #     print str(line.qty_livre)
-        #     self.confirm_fulfillement()
+
         partners = []
         scores = []
         orders = []
@@ -99,27 +103,30 @@ class sale_order_auto_fulfill(models.TransientModel):
         # print decesion_partners
         # print final_decesion_partners
         #
-        for p in final_decesion_partners:
-            self._check_sla_order(p)
-    @api.one
-    def _check_sla_line(self, lines):
+        self._check_sla_order(final_decesion_partners)
+        # for p in final_decesion_partners:
+        #     print p
+
+    @api.multi
+    def _check_sla_line(self, line):
         # so_ids = self.env.context.get('active_ids')
         # lines = self.env['sale.order.line'].browse(so_ids).filtered(lambda line: line.state == 'fulfillement')
-        for line in lines:
-            if line.sla_line_min:
-                if line.qty_livre >= (line.product_uom_qty * line.sla_line_min):
-                    return True
+        if line.qty_livre >= (line.product_uom_qty * line.sla_line_min):
+            return True
 
-    @api.one
+    @api.multi
     def _check_sla_order(self, partners):
-        count = 0
-        for p in partners:
-            if p.fulfillement_sla_ids:
-                orders = self.env['sale.order'].search([('partner_id', '=', p.id), ('state', '=', 'waiting_shipping')])
-                for o in orders:
-                    for l in o.mapped('order_line'):
-                        if self._check_sla_line(l) or l.state !='fulfillement':
-                            count += 1
-                    if count/l.nb_lines >= p.fulfillement_sla_ids[1].value:
-                        print "True"
-                        return True
+        for r in self:
+            count = 0
+            for p in partners:
+                sla_order = p.fulfillement_sla_ids.search([('sla_id', '=', 'sla_order'), ('partner_id', '=', p.id)])
+                if sla_order:
+                    orders = r.env['sale.order'].search([('partner_id', '=', p.id)])
+                    for o in orders:
+                        for l in o.mapped('order_line'):
+                            r._fulfill(l)
+                        for l in o.mapped('order_line'):
+                            if r._check_sla_line(l) or l.state != 'fulfillement':
+                                count += 1
+                        if count/o.nb_lines >= sla_order.value:
+                            return True
