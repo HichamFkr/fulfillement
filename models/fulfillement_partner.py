@@ -8,43 +8,12 @@ class fulfillement_partner(models.Model):
     _inherit = 'res.partner'
 
     fulfillement_is_eligible = fields.Boolean("Eligible", default=False, store=True)
-    fulfillement_score_anciente = fields.Integer("Score Anciente", compute='_get_score_anciente')
-    fulfillement_score_chiffre_affaire = fields.Integer("Score Chiffre d'affaire") #compute='_get_score_chiffre_affaire'
-    fulfillement_partner_coef = fields.Integer()
-    # fulfillement_sla = fields.Many2many("fulfillement.sla", string="SLAs")
     fulfillement_sla_ids = fields.One2many('res.partner.sla', 'partner_id', string="Regles de service")
     start_date = fields.Date(default=fields.Date.today)
+    potentiel_id = fields.Many2one('fulfillement.potentiel', ondelete='set null', string="Potentiel")
+    score = fields.Float(default = 0.0, compute='_get_score')
 
-
-    fulfillement_score = fields.Float("Score") #, store=True
-
-
-    @api.depends('start_date')
-    def _get_score_anciente(self):
-        for r in self:
-            if not (r.start_date):
-                print("====")
-            else:
-                start = fields.Datetime.from_string(r.start_date)
-                end = fields.Datetime.from_string(datetime.today())
-                duration = (end - start).days
-
-                if(duration>0 and duration<=1440):
-                    r.fulfillement_score_anciente = 1
-                elif(duration>1440 and duration<=2880):
-                    r.fulfillement_score_anciente = 2
-                else:
-                    r.fulfillement_score_anciente = 3
-
-
-    @api.depends('credit')
+    @api.one
     def _get_score(self):
-        for r in self:
-            r.fulfillement_score = r.credit + 1.0
-            # if(r.credit >= 0 and r.credit <= 1000):
-            #     r.fulfillement_score = 2
-            # elif(r.credit > 1000 and r.credit <= 2000):
-            #     r.fulfillement_score = 4
-            # else:
-            #     r.fulfillement_score = 5
-            
+        score = self.env['res.partner.score'].browse(7).calcule_score(self)[0]
+        self.score = score

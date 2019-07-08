@@ -28,9 +28,12 @@
 			<field name="inherit_id" ref="insidjam_stock_fulfillement.partner_sla_form_view"/>
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='fulfillement_sla_ids']" position="after">
-            		<field name="fulfillement_score"/>
+<!--             		<field name="fulfillement_score"/> -->
+            		<field name="potentiel_id"/>
+            		<field name="score"/>
             	</xpath>
             </field>
 		</record>
+
 	</data>
 </openerp>

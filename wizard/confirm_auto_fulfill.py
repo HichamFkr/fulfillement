@@ -40,7 +40,7 @@ class sale_order_auto_fulfill(models.TransientModel):
 
     @api.one
     def _fulfill(self, line):
-        line.ensure_one()
+        # line.ensure_one()
         qty = line.product_uom_qty * line.sla_line_min
         if type(qty) == "Float":
             line.qty_livre = int(qty) + 1
@@ -119,14 +119,16 @@ class sale_order_auto_fulfill(models.TransientModel):
         for r in self:
             count = 0
             for p in partners:
-                sla_order = p.fulfillement_sla_ids.search([('sla_id', '=', 'sla_order'), ('partner_id', '=', p.id)])
-                if sla_order:
-                    orders = r.env['sale.order'].search([('partner_id', '=', p.id)])
-                    for o in orders:
-                        for l in o.mapped('order_line'):
-                            r._fulfill(l)
-                        for l in o.mapped('order_line'):
-                            if r._check_sla_line(l) or l.state != 'fulfillement':
-                                count += 1
-                        if count/o.nb_lines >= sla_order.value:
-                            return True
+                slas = p.fulfillement_sla_ids
+                for sla in slas:
+                    if sla:
+                        if sla.sla_id.fulfillement_sla_name == "Order percent":
+                            orders = r.env['sale.order'].search([('partner_id', '=', p.id)])
+                            for o in orders:
+                                for l in o.mapped('order_line'):
+                                    r._fulfill(l)
+                                for l in o.mapped('order_line'):
+                                    if r._check_sla_line(l) == True or l.state != 'fulfillement':
+                                        count += 1
+                                if count/o.nb_lines >= sla.value:
+                                    return True
